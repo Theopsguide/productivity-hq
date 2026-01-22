@@ -246,6 +246,10 @@ Now create the credentials file that the MCP server will use.
 3. Save the file as `credentials.json`
 4. **Store this file securely** - you'll need it for the MCP server
 
+**Note on Redirect URIs:** For Desktop apps, Google automatically configures redirect URIs. If you encounter redirect errors during authentication, you may need to add authorized redirect URIs. Click on your OAuth client in the Credentials list, then add:
+- `http://localhost` (most common)
+- Check your MCP server's documentation for specific port requirements
+
 **Checkpoint:** You should have a `credentials.json` file downloaded (about 1KB).
 
 ---
