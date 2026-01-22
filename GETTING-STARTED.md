@@ -18,6 +18,20 @@ Your personal AI productivity headquarters that can:
 
 ---
 
+## Quick Glossary
+
+New to this? Here's what the technical terms mean:
+
+| Term | What it means |
+|------|---------------|
+| **MCP** | Model Context Protocol - how Claude connects to other apps (like Gmail) |
+| **OAuth** | The secure login system Google uses - you'll see "Sign in with Google" |
+| **API** | How apps talk to each other - you're giving Claude permission to talk to Google |
+| **Credentials** | A special file (like a password) that proves you own this Google connection |
+| **Terminal** | The text-based command window (Command Prompt on Windows, Terminal on Mac) |
+
+---
+
 ## Prerequisites
 
 Before starting, you need:
@@ -69,8 +83,6 @@ You should see the Claude Code icon in your IDE sidebar.
 
 ## Step 1: Configure Your Identity
 
-**Time:** 5 minutes
-
 Open `CLAUDE.md` and fill in the Configuration section:
 
 ```markdown
@@ -98,20 +110,64 @@ Claude should respond with the values you just entered.
 
 ---
 
-## Step 2: Connect Google Workspace
+## Step 2: Connect Your Tools
 
-**Time:** 20-30 minutes
+Claude can connect to your calendar, email, and files. Let's set up what you need.
 
-This connects Claude to your Gmail and Google Calendar using MCP (Model Context Protocol). You'll create your own Google Cloud project with OAuth credentials - this is a one-time setup.
+### What Each Integration Does
+
+| Integration | What Claude Can Do | Example Uses |
+|-------------|-------------------|--------------|
+| **Google Calendar** | See your events, create meetings, check availability | "What's on my calendar today?", "Schedule a call with John" |
+| **Gmail** | Read emails, draft replies, search messages | "Any urgent emails?", "Draft a reply to Sarah's message" |
+| **Google Drive** | Read documents, find files | "What's in the Q4 report?", "Find the contract PDF" |
+
+**You can start with just one** and add more later. Calendar is the most useful for daily briefings.
+
+---
+
+### What do you want Claude to access?
+
+**Tell Claude:** "I want to set up [your choice]"
+
+| If you want... | Tell Claude... |
+|----------------|----------------|
+| Google Calendar + Gmail | "Set up Google Workspace" |
+| Only Google Calendar | "Set up just Google Calendar" |
+| Only Gmail | "Set up just Gmail" |
+| Microsoft Outlook + Calendar | "Set up Microsoft 365" *(coming soon)* |
+| Both Google and Microsoft | "Set up Google first, then Microsoft" |
+
+Claude will guide you through the specific steps for your choice.
+
+---
+
+## Option A: Google Workspace Setup
+
+*Follow this section if you chose Google Calendar, Gmail, or both.*
+
+**🚨 IMPORTANT: Claude Code vs Claude Desktop**
+
+This guide is for **Claude Code** (the CLI tool and VS Code extension), NOT the Claude Desktop app.
+
+| If you're using... | You're in the right place? |
+|--------------------|---------------------------|
+| VS Code/Cursor/Windsurf with Claude extension | ✅ Yes |
+| Terminal with `claude` command | ✅ Yes |
+| Claude Desktop app (standalone Mac/Windows app) | ❌ No - different setup needed |
+
+**How to check:** If you're reading this in your IDE's sidebar or ran `/daily` to get here, you're using Claude Code. ✅
+
+---
 
 ### Before You Start
 
 **What you'll need:**
 - A Google account (personal Gmail or Google Workspace)
-- About 20-30 minutes for initial setup
 - Your `credentials.json` file (you'll create this below)
 
 **Two consoles to know about:**
+
 | Console | URL | Purpose |
 |---------|-----|---------|
 | Google Cloud Console | [console.cloud.google.com](https://console.cloud.google.com/) | Create OAuth credentials (what we'll use) |
@@ -133,15 +189,17 @@ Sign in with the Google account you want Claude to access.
 
 1. Look at the top left, next to the "Google Cloud" logo
 2. Click the **project dropdown** (might say "Select a project" or show a project name)
-3. In the popup, click **New Project** (top right)
+3. In the popup, click **New Project** (top right corner of the popup)
 4. Enter project details:
    - **Project name:** `Claude MCP` (or any name you like)
    - **Organization:** Leave as default (or "No organization")
-5. Click **Create**
+5. Click the blue **Create** button
 6. Wait a few seconds for the project to be created
 7. Click **Select Project** when prompted, or select it from the dropdown
 
-**Checkpoint:** You should see "Claude MCP" (or your project name) in the top dropdown.
+**✓ You'll know it worked when:**
+- You see "Claude MCP" (or your project name) in the top dropdown
+- The page shows your project dashboard
 
 ---
 
@@ -149,18 +207,20 @@ Sign in with the Google account you want Claude to access.
 
 Your project needs permission to access Gmail, Calendar, etc.
 
-1. In the left sidebar, click **APIs & Services**
-2. Click **Library** (or go to [API Library](https://console.cloud.google.com/apis/library))
-3. Enable each of these APIs:
+1. In the left sidebar, look for **APIs & Services** (you may need to click the hamburger menu ☰)
+2. Click **Library** (or go directly to [API Library](https://console.cloud.google.com/apis/library))
+3. Enable each API you need:
 
 **Gmail API:**
-1. Search for "Gmail API"
+1. In the search box, type "Gmail API"
 2. Click on **Gmail API** in the results
 3. Click the blue **Enable** button
 4. Wait for it to enable (you'll see a dashboard)
 
+**✓ You'll know it worked when:** The button changes from "Enable" to "Manage"
+
 **Google Calendar API:**
-1. Go back to the Library (click "Library" in left sidebar)
+1. Click **Library** in the left sidebar to go back
 2. Search for "Google Calendar API"
 3. Click on **Google Calendar API**
 4. Click **Enable**
@@ -169,7 +229,9 @@ Your project needs permission to access Gmail, Calendar, etc.
 1. Search for "Google Drive API"
 2. Click **Enable** (gives Claude access to your Drive files)
 
-**Checkpoint:** Go to **APIs & Services** → **Enabled APIs** and verify you see Gmail and Calendar listed.
+**✓ You'll know it worked when:**
+- Go to **APIs & Services** → **Enabled APIs**
+- You see Gmail API and Google Calendar API in the list
 
 ---
 
@@ -178,7 +240,7 @@ Your project needs permission to access Gmail, Calendar, etc.
 This tells Google what your app is and who can use it.
 
 1. In the left sidebar, click **APIs & Services** → **OAuth consent screen**
-2. Select **User Type:**
+2. You'll be asked to select **User Type:**
    - **External** - Choose this (works for any Google account)
    - **Internal** - Only shows if you have Google Workspace (limits to your org)
 3. Click **Create**
@@ -188,7 +250,7 @@ This tells Google what your app is and who can use it.
 | Field | What to Enter |
 |-------|---------------|
 | **App name** | `Claude MCP` |
-| **User support email** | Your email address |
+| **User support email** | Your email address (select from dropdown) |
 | **App logo** | Skip (optional) |
 | **App domain** | Skip all of these |
 | **Developer contact email** | Your email address |
@@ -224,37 +286,112 @@ While your app is in "Testing" mode, only these users can authenticate.
 1. Review your settings
 2. Click **Back to Dashboard**
 
-**Checkpoint:** OAuth consent screen should show "Testing" status with your app name.
+**✓ You'll know it worked when:**
+- OAuth consent screen shows "Testing" status
+- Your app name "Claude MCP" appears
 
 ---
 
-### 2.4 Create OAuth Credentials
+### 2.4 Create Your Login Credentials
 
-Now create the credentials file that the MCP server will use.
+This step creates a special file that lets Claude log into Google on your behalf.
 
-1. In the left sidebar, click **APIs & Services** → **Credentials**
-2. Click **+ Create Credentials** (top of page)
-3. Select **OAuth client ID**
-4. For **Application type**, select **Desktop app**
-5. **Name:** `Claude MCP Client`
-6. Click **Create**
+**What you're doing:** Creating a secure "key" that only you and Claude will have.
 
-**Download Your Credentials:**
+#### Step-by-Step:
 
-1. A popup appears with your Client ID and Secret
-2. Click **Download JSON**
-3. Save the file as `credentials.json`
-4. **Store this file securely** - you'll need it for the MCP server
+1. **Find the Credentials page**
+   - In the left sidebar, look for **APIs & Services**
+   - Click **Credentials**
 
-**Note on Redirect URIs:** For Desktop apps, Google automatically configures redirect URIs. If you encounter redirect errors during authentication, you may need to add authorized redirect URIs. Click on your OAuth client in the Credentials list, then add:
-- `http://localhost` (most common)
-- Check your MCP server's documentation for specific port requirements
+2. **Create new credentials**
+   - At the top of the page, find the blue **+ Create Credentials** button
+   - Click it
+   - A dropdown menu appears - click **OAuth client ID**
 
-**Checkpoint:** You should have a `credentials.json` file downloaded (about 1KB).
+3. **If asked about consent screen:**
+   - You might see: "To create an OAuth client ID, you must first configure your consent screen"
+   - If so, click **Configure Consent Screen** and follow section 2.3 first
+   - Then come back here
+
+4. **Configure the client**
+   - **Application type:** Click the dropdown and select **Desktop app**
+   - **Name:** Type `Claude MCP Client` (or any name you'll remember)
+   - Click the blue **Create** button
+
+5. **A popup appears** showing your Client ID and Client Secret
+   - Click **OK** to close it for now
+
+6. **Add the redirect URL** (IMPORTANT - don't skip this!)
+   - Find your new client in the OAuth 2.0 Client IDs list
+   - Click on the client name to open its settings
+   - Scroll down to **Authorized redirect URIs**
+   - Click **+ Add URI**
+   - Type exactly: `http://localhost:8000/oauth2callback`
+   - Click **Save**
+
+   **⚠️ Why this matters:** When you log in, Google needs to know where to send you back. Without this URL, you'll see "localhost refused to connect."
+
+7. **Download your credentials file**
+   - Go back to the Credentials page (click Credentials in the breadcrumb)
+   - Find your OAuth client in the "OAuth 2.0 Client IDs" list
+   - On the right side, click the download icon (⬇️ arrow)
+   - Save the file - it will be named something like `client_secret_xxxxx.json`
+   - **Rename it to:** `credentials.json`
+
+**✓ You'll know it worked when:**
+- You have a file called `credentials.json` in your Downloads folder
+- The file is about 1KB in size
+- If you open it in a text editor, you'll see `"client_id"` and `"client_secret"` inside
 
 ---
 
-### 2.5 Install the MCP Server
+### 2.5 Store and Configure Your Credentials
+
+Now connect your credentials to Claude Code.
+
+#### Store Credentials Securely
+
+Move your credentials to a permanent location (not Downloads):
+
+**Mac/Linux:**
+```bash
+# Create a folder for MCP credentials
+mkdir -p ~/.mcp-credentials
+
+# Move your credentials file
+mv ~/Downloads/credentials.json ~/.mcp-credentials/google-credentials.json
+```
+
+**Windows (PowerShell):**
+```powershell
+# Create a folder for MCP credentials
+mkdir $env:USERPROFILE\.mcp-credentials
+
+# Move your credentials file
+move $env:USERPROFILE\Downloads\credentials.json $env:USERPROFILE\.mcp-credentials\google-credentials.json
+```
+
+#### Where Claude Code Stores MCP Settings
+
+Claude Code's MCP settings are stored in a file called `settings.local.json`:
+
+**Config file location:**
+- **Mac/Linux:** `~/.claude/settings.local.json`
+- **Windows:** `C:\Users\YourName\.claude\settings.local.json`
+
+**⚠️ NOT the Claude Desktop config at:**
+- Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+The MCP server installation (next step) will configure this for you automatically.
+
+**✓ You'll know it worked when:**
+- Your credentials.json is stored in `~/.mcp-credentials/` (not Downloads)
+
+---
+
+### 2.6 Install the MCP Server
 
 Now install the MCP server that will use your credentials.
 
@@ -264,7 +401,7 @@ Now install the MCP server that will use your credentials.
 ```bash
 npx -y @smithery/cli install mcp-gsuite --client claude
 ```
-Then follow prompts to add your `credentials.json`.
+Then follow prompts to add your `credentials.json` path.
 
 **Option B: Manual Setup**
 ```bash
@@ -276,7 +413,7 @@ cd google_workspace_mcp
 npm install
 
 # Copy your credentials.json to the project folder
-cp ~/Downloads/credentials.json .
+cp ~/.mcp-credentials/google-credentials.json ./credentials.json
 
 # Run authentication
 npm run auth
@@ -284,23 +421,46 @@ npm run auth
 
 See the [MCP Servers Directory](https://github.com/modelcontextprotocol/servers) for other options.
 
----
-
-### 2.6 Authenticate
-
-1. Run the MCP server's authentication command
-2. A browser window will open automatically
-3. Sign in with the **same Google account** you added as a test user
-4. You'll see a warning: "Google hasn't verified this app"
-   - Click **Continue** (this is expected for your own app)
-5. Review the permissions and click **Allow**
-6. Close the browser - authentication is complete
-
-**Checkpoint:** You should see a success message in your terminal.
+**✓ You'll know it worked when:**
+- The installation completes without errors
+- You see the MCP server listed in your Claude settings
 
 ---
 
-### 2.7 Update CLAUDE.md
+### 2.7 Log In to Google (Authentication)
+
+This is where you actually connect Claude to your Google account.
+
+**What happens:** A browser window opens, you log into Google, and Claude saves the connection.
+
+**⚠️ Common Mistake:** Don't close the terminal window while authenticating! The process needs to stay running until you see "Success."
+
+#### Step-by-Step:
+
+1. **Start the authentication**
+   - Open your terminal
+   - Navigate to where you installed the MCP server
+   - Run the authentication command (usually `npm run auth`)
+
+2. **A browser window opens automatically**
+   - If it doesn't open, look in your terminal for a URL to copy/paste
+
+3. **Sign in to Google**
+   - Use the **same Google account** you added as a test user earlier
+   - If you see "This app isn't verified" - that's normal! Click **Continue**
+   - Review the permissions and click **Allow**
+
+4. **Return to your terminal**
+   - You should see: "Authentication successful!" or similar
+   - **Keep the terminal open** until you see this message
+
+**✓ You'll know it worked when:**
+- Terminal shows "Authentication successful" or "Credentials saved"
+- A new file appears (usually called `token.json` or similar)
+
+---
+
+### 2.8 Update CLAUDE.md
 
 Now tell Claude about your Google connection.
 
@@ -331,9 +491,20 @@ Claude should query your Google Calendar and show your events.
 
 ---
 
-## Step 3: Run Your First Briefing
+## Option B: Microsoft 365 Setup (Coming Soon)
 
-**Time:** 5 minutes
+*This section is under development. Join the community for updates.*
+
+Microsoft 365 connection will include:
+- Outlook Calendar
+- Outlook Email
+- OneDrive files
+
+**Want this sooner?** Let us know in the community: [theoperationsguide.com/community](https://theoperationsguide.com/community)
+
+---
+
+## Step 3: Run Your First Briefing
 
 Now let's test the `/daily` command.
 
@@ -368,8 +539,6 @@ You should see a formatted briefing with:
 ---
 
 ## Step 4: Add Your First Venture (Optional)
-
-**Time:** 5 minutes
 
 "Ventures" are projects, clients, or areas of focus you want Claude to know about.
 
@@ -467,11 +636,78 @@ claude
 | `CLAUDE.md` | Workspace memory - Claude reads this every session |
 | `.claude/commands/daily.md` | The /daily command logic |
 | `.claude/settings.json` | Permissions |
+| `~/.claude/settings.local.json` | MCP server configuration |
 | `projects/` | Active project work - create folders here |
 | `ventures/*.md` | Context about your ventures/businesses |
 | `_archive/` | Completed projects (move here when done) |
 
-### Common Issues
+---
+
+## If Something Goes Wrong
+
+### "localhost refused to connect"
+
+**What it looks like:** Browser shows "This site can't be reached" after logging into Google.
+
+**Why it happens:** Google tried to send you back to Claude, but the authentication server wasn't listening.
+
+**How to fix:**
+1. Make sure your terminal is still open with the auth command running
+2. Go to Google Cloud Console → Credentials → Your OAuth client
+3. Check that `http://localhost:8000/oauth2callback` is in the redirect URIs
+4. Click Save and wait 2-3 minutes for changes to propagate
+5. Run the auth command again
+
+### "redirect_uri_mismatch"
+
+**What it looks like:** Google shows an error page mentioning "redirect_uri_mismatch."
+
+**Why it happens:** The URL in Google Console doesn't exactly match what the MCP server expects.
+
+**How to fix:**
+1. Look at the error message - it often shows the expected URL
+2. Copy that exact URL
+3. Add it to your Google Console redirect URIs (Credentials → Your OAuth client)
+4. Save and wait 2-3 minutes
+5. Try again
+
+### "Access blocked: This app's request is invalid"
+
+**What it looks like:** Google shows a scary error about invalid requests.
+
+**Why it happens:** You haven't added yourself as a test user.
+
+**How to fix:**
+1. Go to Google Cloud Console → OAuth consent screen
+2. Scroll down to "Test users"
+3. Click **Add Users**
+4. Add your Google email address
+5. Save and try again
+
+### "This app isn't verified" warning
+
+**What it looks like:** Google shows a warning screen about unverified apps.
+
+**Why it happens:** Your app is in "Testing" mode (which is fine for personal use).
+
+**How to fix:**
+1. This is expected! Click **Continue**
+2. Review the permissions
+3. Click **Allow**
+
+### Claude says "MCP server not found" or similar
+
+**What it looks like:** Claude doesn't recognize Google commands like "What's on my calendar?"
+
+**Why it happens:** The MCP server isn't configured in Claude's settings.
+
+**How to fix:**
+1. Check that `~/.claude/settings.local.json` exists
+2. Make sure it has a `mcpServers` section with your Google config
+3. Verify the paths in the config point to your actual credential files
+4. Restart Claude Code (close and reopen your IDE)
+
+### Common Issues Quick Reference
 
 | Problem | Solution |
 |---------|----------|
@@ -479,6 +715,7 @@ claude
 | "MCP authentication failed" | Re-run OAuth flow for that tool |
 | "Empty results" | Verify email in CLAUDE.md matches your account |
 | "Claude doesn't remember" | Make sure CLAUDE.md is in workspace root |
+| "localhost refused to connect" | Add redirect URI + keep terminal open during auth |
 
 ---
 
