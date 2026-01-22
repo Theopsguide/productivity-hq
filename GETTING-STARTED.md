@@ -100,29 +100,99 @@ Claude should respond with the values you just entered.
 
 ## Step 2: Connect Google Workspace
 
-**Time:** 15-20 minutes
+**Time:** 20-30 minutes
 
 This connects Claude to your Gmail and Google Calendar using MCP (Model Context Protocol).
 
-### 2.1 Install the MCP Server
+### 2.1 Create Google Cloud Project & OAuth Credentials
 
-**Recommended:** [google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp) - Most feature-complete with 1-click Claude installation
+First, you need to set up OAuth credentials in Google Cloud Console.
 
-**Option A: Smithery CLI (Easiest)**
+**Go to:** [Google Cloud Console](https://console.cloud.google.com/)
+
+#### Step 1: Create a New Project
+
+1. Click the project dropdown (top left, next to "Google Cloud")
+2. Click **New Project**
+3. Name it something like "Claude MCP" or "Productivity HQ"
+4. Click **Create**
+5. Make sure the new project is selected
+
+#### Step 2: Enable APIs
+
+1. Go to **APIs & Services** → **Library** (left sidebar)
+2. Search for and enable these APIs:
+   - **Gmail API** - Click it, then click **Enable**
+   - **Google Calendar API** - Click it, then click **Enable**
+   - **Google Drive API** (optional) - For file access
+
+#### Step 3: Configure OAuth Consent Screen
+
+1. Go to **APIs & Services** → **OAuth consent screen**
+2. Select **External** (unless you have Google Workspace admin access)
+3. Click **Create**
+4. Fill in required fields:
+   - **App name:** "Claude MCP" (or anything you like)
+   - **User support email:** Your email
+   - **Developer contact:** Your email
+5. Click **Save and Continue**
+6. On **Scopes** page, click **Add or Remove Scopes**
+7. Add these scopes (search or paste):
+   - `https://www.googleapis.com/auth/gmail.modify`
+   - `https://www.googleapis.com/auth/calendar`
+   - `https://www.googleapis.com/auth/drive.readonly` (optional)
+8. Click **Update**, then **Save and Continue**
+9. On **Test users** page, click **Add Users**
+10. Add your Google email address
+11. Click **Save and Continue**
+
+#### Step 4: Create OAuth Credentials
+
+1. Go to **APIs & Services** → **Credentials**
+2. Click **Create Credentials** → **OAuth client ID**
+3. Application type: **Desktop app**
+4. Name: "Claude MCP Client"
+5. Click **Create**
+6. Click **Download JSON** (save as `credentials.json`)
+
+**Keep this file safe** - you'll need it for the MCP server setup.
+
+---
+
+### 2.2 Install the MCP Server
+
+**Recommended:** [google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp)
+
+**Option A: Smithery CLI**
 ```bash
 npx -y @smithery/cli install mcp-gsuite --client claude
 ```
 
 **Option B: Manual Setup**
+```bash
+# Clone the repo
+git clone https://github.com/taylorwilsdon/google_workspace_mcp.git
+cd google_workspace_mcp
+
+# Install dependencies
+npm install
+
+# Copy your credentials.json to the project folder
+cp ~/Downloads/credentials.json .
+```
+
 See the [MCP Servers Directory](https://github.com/modelcontextprotocol/servers) for other options.
 
-### 2.2 Authenticate
+---
 
-1. Follow the setup instructions for your chosen MCP server
-2. Create OAuth credentials in Google Cloud Console
-3. A browser window will open for authentication
-4. Sign in with your Google account
-5. Grant permissions for Gmail and Calendar access
+### 2.3 Authenticate
+
+1. Run the MCP server's authentication command
+2. A browser window will open
+3. Sign in with the Google account you added as a test user
+4. Click **Continue** (even if it shows "unverified app" warning)
+5. Grant all requested permissions
+6. The credentials will be saved locally
 
 ### 2.3 Update CLAUDE.md
 
