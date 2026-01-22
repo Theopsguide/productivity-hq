@@ -22,11 +22,48 @@ Your personal AI productivity headquarters that can:
 
 Before starting, you need:
 
-| Requirement | Details |
-|-------------|---------|
-| **Claude Code CLI** | [Install here](https://docs.anthropic.com/en/docs/build-with-claude/claude-code) |
-| **VSCode** | [Download](https://code.visualstudio.com/download) |
-| **Google Account** | For Gmail and Calendar access |
+### IDE (pick one)
+
+Any VSCode-based IDE works:
+- [VSCode](https://code.visualstudio.com/download)
+- [Cursor](https://cursor.com)
+- [Windsurf](https://windsurf.ai)
+- [Google Antigravity](https://antigravity.google)
+
+### Claude Code
+
+| Tool | Link |
+|------|------|
+| **Claude Code CLI** | [Install Guide](https://docs.anthropic.com/en/docs/claude-code) |
+| **Claude Code Extension** | [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) (recommended) |
+
+### Other
+
+- **Google Account** - For Gmail and Calendar access via MCP
+
+---
+
+## Step 0: Install Claude Code Extension (Recommended)
+
+The Claude Code extension gives you an integrated experience inside your IDE.
+
+1. Open your IDE (VSCode, Cursor, Windsurf, etc.)
+2. Go to Extensions (Cmd+Shift+X on Mac, Ctrl+Shift+X on Windows)
+3. Search for "Claude Code"
+4. Install the extension by Anthropic
+
+**Features you get:**
+- Chat panel integrated in your IDE
+- Checkpoints - press `Esc` twice to rewind changes
+- File context awareness
+
+**Alternative:** You can also run `claude` directly in your terminal.
+
+### Checkpoint
+
+You should see the Claude Code icon in your IDE sidebar.
+
+- [ ] **PASS:** Claude Code extension is installed
 
 ---
 
@@ -65,26 +102,27 @@ Claude should respond with the values you just entered.
 
 **Time:** 15-20 minutes
 
-This connects Claude to your Gmail and Google Calendar.
+This connects Claude to your Gmail and Google Calendar using MCP (Model Context Protocol).
 
 ### 2.1 Install the MCP Server
 
-Follow the official setup guide for Google Workspace MCP:
+Follow the official setup guide:
 
-**Option A: npx (Recommended)**
+**Documentation:** [MCP Servers - Google Workspace](https://github.com/anthropics/anthropic-mcp-servers/tree/main/packages/google-workspace)
+
+**Quick Install:**
 ```bash
-npx @anthropic-ai/google-workspace-mcp
+# Install the Google Workspace MCP server
+npm install -g @anthropic-ai/mcp-server-google-workspace
 ```
-
-**Option B: Manual Installation**
-See: https://github.com/anthropics/anthropic-mcp-servers
 
 ### 2.2 Authenticate
 
-1. The installer will open a browser window
-2. Sign in with your Google account
-3. Grant permissions for Gmail and Calendar access
-4. Copy the generated credentials
+1. Run the authentication command (see docs above)
+2. A browser window will open
+3. Sign in with your Google account
+4. Grant permissions for Gmail and Calendar access
+5. The credentials will be saved locally
 
 ### 2.3 Update CLAUDE.md
 
@@ -199,10 +237,10 @@ Congratulations! Your Productivity HQ is now operational.
 
 ### What You Have
 
-- [x] Claude Code CLI installed
+- [x] IDE with Claude Code extension installed
 - [x] HQ workspace configured
 - [x] CLAUDE.md with your context
-- [x] Google Workspace connected
+- [x] Google Workspace connected via MCP
 - [x] `/daily` command working
 
 ### Daily Workflow

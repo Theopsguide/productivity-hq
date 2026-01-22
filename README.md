@@ -16,10 +16,10 @@ A template workspace for Claude Code that gives you:
 git clone https://github.com/Theopsguide/productivity-hq.git my-hq
 cd my-hq
 
-# 2. Open in VSCode
+# 2. Open in your IDE
 code .
 
-# 3. Start Claude Code
+# 3. Start Claude Code (in terminal or via extension)
 claude
 
 # 4. Ask Claude to walk you through setup
@@ -42,9 +42,22 @@ productivity-hq/
 
 ## Requirements
 
-- [Claude Code CLI](https://docs.anthropic.com/en/docs/build-with-claude/claude-code)
+### IDE (pick one)
+
+Any VSCode-based IDE works:
 - [VSCode](https://code.visualstudio.com/download)
-- Google Account (for Gmail/Calendar)
+- [Cursor](https://cursor.com)
+- [Windsurf](https://windsurf.ai)
+- [Google Antigravity](https://antigravity.google)
+
+### Claude Code
+
+- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code)
+- [Claude Code Extension](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) (recommended)
+
+### Tools
+
+- Google Account (for Gmail/Calendar via MCP)
 
 ## Learn More
 
