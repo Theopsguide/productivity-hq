@@ -106,23 +106,23 @@ This connects Claude to your Gmail and Google Calendar using MCP (Model Context 
 
 ### 2.1 Install the MCP Server
 
-Follow the official setup guide:
+**Recommended:** [google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp) - Most feature-complete with 1-click Claude installation
 
-**Documentation:** [MCP Servers - Google Workspace](https://github.com/anthropics/anthropic-mcp-servers/tree/main/packages/google-workspace)
-
-**Quick Install:**
+**Option A: Smithery CLI (Easiest)**
 ```bash
-# Install the Google Workspace MCP server
-npm install -g @anthropic-ai/mcp-server-google-workspace
+npx -y @smithery/cli install mcp-gsuite --client claude
 ```
+
+**Option B: Manual Setup**
+See the [MCP Servers Directory](https://github.com/modelcontextprotocol/servers) for other options.
 
 ### 2.2 Authenticate
 
-1. Run the authentication command (see docs above)
-2. A browser window will open
-3. Sign in with your Google account
-4. Grant permissions for Gmail and Calendar access
-5. The credentials will be saved locally
+1. Follow the setup instructions for your chosen MCP server
+2. Create OAuth credentials in Google Cloud Console
+3. A browser window will open for authentication
+4. Sign in with your Google account
+5. Grant permissions for Gmail and Calendar access
 
 ### 2.3 Update CLAUDE.md
 
