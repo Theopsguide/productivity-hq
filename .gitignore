@@ -1,0 +1,50 @@
+# Environment and secrets
+.env
+.env.*
+*.env
+.env.local
+.env.development
+.env.production
+
+# Credentials and tokens
+*.token
+*.key
+*credentials*
+*secret*
+*.pem
+*.p12
+
+# API keys
+*api_key*
+*apikey*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor files
+.vscode/settings.json
+.idea/
+*.sublime-*
+
+# Logs
+*.log
+logs/
+
+# Node modules (if you add any scripts)
+node_modules/
+
+# Python (if you add any scripts)
+__pycache__/
+*.pyc
+.venv/
+venv/
