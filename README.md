@@ -35,7 +35,9 @@ productivity-hq/
 ├── .claude/
 │   ├── commands/daily.md  # Morning briefing command
 │   └── settings.json      # Safe default permissions
-└── ventures/              # Context docs for your projects
+├── projects/              # Active project work
+├── ventures/              # Context docs for your ventures
+└── _archive/              # Completed projects
 ```
 
 ## Requirements

@@ -251,7 +251,9 @@ claude
 | `CLAUDE.md` | Workspace memory - Claude reads this every session |
 | `.claude/commands/daily.md` | The /daily command logic |
 | `.claude/settings.json` | Permissions |
-| `ventures/*.md` | Context about your projects |
+| `projects/` | Active project work - create folders here |
+| `ventures/*.md` | Context about your ventures/businesses |
+| `_archive/` | Completed projects (move here when done) |
 
 ### Common Issues
 

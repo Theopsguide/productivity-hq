@@ -24,9 +24,17 @@ hq/
 ├── .claude/            # Claude Code configuration
 │   ├── commands/       # Custom commands like /daily
 │   └── settings.json   # Permissions
-├── ventures/           # Context docs for your projects/ventures
+├── projects/           # Active project work (main working area)
+├── ventures/           # Context docs for your ventures/businesses
+├── _archive/           # Completed projects (YYYY-MM-project-name/)
 └── [working files]     # Temporary files for quick tasks
 ```
+
+### How to Use These Folders
+
+- **projects/** - Create a folder for each active project: `projects/my-app/`
+- **ventures/** - Add Quick Glance docs for each venture/business you run
+- **_archive/** - Move completed projects here: `_archive/2026-01-my-project/`
 
 ---
 
